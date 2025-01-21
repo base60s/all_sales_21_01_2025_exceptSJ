@@ -15,36 +15,17 @@ st.title("📊 Sales Analysis Dashboard")
 @st.cache_data
 def load_data():
     try:
-        # Define file paths
-        base_dir = os.path.expanduser("~/Downloads")
+        # Define file paths relative to the script directory
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        data_dir = os.path.join(script_dir, 'data')
         
-        # Dictionary of all store files
-        files = {
-            'Azcuénaga': os.path.join(base_dir, 'extracted_report_Azcuénaga/sales_analysis_Azcuénaga_20250121_181153.csv'),
-            'Colon_Brunch': os.path.join(base_dir, 'extracted_report_Colon_Brunch/sales_analysis_Colon_Brunch_20250121_180411.csv'),
-            'Viamonte': os.path.join(base_dir, 'extracted_report_Viamonte/sales_analysis_Viamonte_20250121_181318.csv'),
-            'Chacras': os.path.join(base_dir, 'extracted_report_Chacras/sales_analysis_Chacras_20250121_184204.csv'),
-            'ElPidio': os.path.join(base_dir, 'extracted_report_ElPidio/sales_analysis_ElPidio_20250121_183024.csv'),
-            'Pizzabox': os.path.join(base_dir, 'extracted_report_Pizzabox/sales_analysis_Pizzabox_20250121_182151.csv'),
-            'Palero': os.path.join(base_dir, 'extracted_report_Palero/sales_analysis_Palero_20250121_180246.csv'),
-            'Tiburcio': os.path.join(base_dir, 'extracted_report_Tiburcio/sales_analysis_Tiburcio_20250121_182858.csv'),
-            'PuenteOlive': os.path.join(base_dir, 'extracted_report_PuenteOlive/sales_analysis_PuenteOlive_20250121_182733.csv'),
-            'Panamericana': os.path.join(base_dir, 'extracted_report_Panamericana/sales_analysis_Panamericana_20250121_182025.csv'),
-            'Centro': os.path.join(base_dir, 'extracted_report_Centro/sales_analysis_Centro_20250121_184330.csv'),
-            'Cervantes': os.path.join(base_dir, 'extracted_report_Cervantes/sales_analysis_Cervantes_20250121_180537.csv'),
-            'Colon1': os.path.join(base_dir, 'extracted_report_Colon1/sales_analysis_Colon1_20250121_180902.csv'),
-            'GodoyCruz': os.path.join(base_dir, 'extracted_report_GodoyCruz/sales_analysis_GodoyCruz_20250121_181028.csv'),
-            'Dorrego': os.path.join(base_dir, 'extracted_report_Dorrego/sales_analysis_Dorrego_20250121_182442.csv'),
-            'Vistalba': os.path.join(base_dir, 'extracted_report_Vistalba/sales_analysis_Vistalba_20250121_181444.csv'),
-            'JBJ': os.path.join(base_dir, 'extracted_report_JBJ/sales_analysis_JBJ_20250121_181900.csv'),
-            'Beltran': os.path.join(base_dir, 'extracted_report_Beltran/sales_analysis_Beltran_20250121_181609.csv'),
-            'Jac': os.path.join(base_dir, 'extracted_report_Jac/sales_analysis_Jac_20250121_181734.csv'),
-            'Rotonda': os.path.join(base_dir, 'extracted_report_Rotonda/sales_analysis_Rotonda_20250121_180120.csv'),
-            'SJ_Shell': os.path.join(base_dir, 'extracted_report_SJ_Shell/sales_analysis_SJ_Shell_20250121_183224.csv'),
-            'Avellaneda': os.path.join(base_dir, 'extracted_report_Avellaneda/sales_analysis_Avellaneda_20250121_182607.csv'),
-            'Sarmiento': os.path.join(base_dir, 'extracted_report_Sarmiento/sales_analysis_Sarmiento_20250121_182316.csv'),
-            'Tunuyan_LV': os.path.join(base_dir, 'extracted_report_Tunuyan_LV/sales_analysis_Tunuyan_LV_20250121_190651.csv')
-        }
+        # Get all CSV files in the data directory
+        files = {}
+        for file in os.listdir(data_dir):
+            if file.startswith('sales_analysis_') and file.endswith('.csv'):
+                # Extract location name from filename
+                location = file.replace('sales_analysis_', '').split('_')[0]
+                files[location] = os.path.join(data_dir, file)
         
         # Read and combine all files
         dfs = []
